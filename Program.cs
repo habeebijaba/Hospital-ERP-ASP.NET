@@ -26,7 +26,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/"; // Specify the access denied page URL
     });
 
-
+//for specifying authorization
    builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Admin", policy => policy.RequireClaim("IsAdmin", "true"));
@@ -77,14 +77,15 @@ app.MapControllerRoute(
     defaults: new { controller = "Account", action = "Dashboard" });
 
 app.MapControllerRoute(
-    name: "customRoute",
-    pattern: "custom/{action}/{id?}",
-    defaults: new { controller = "Custom", action = "MyAction" });
+    name: "services",
+    // pattern: "services/{action}/{id?}",
+    pattern:"/Services",
+    defaults: new { controller = "Services", action = "Services" });
 
 app.MapControllerRoute(
-    name: "myRoute",
-    pattern: "me/{action}/{id?}",
-    defaults: new { controller = "Me", action = "MyAction" });
+    name: "doctors",
+    pattern: "/Doctors",
+    defaults: new { controller = "Doctors", action = "Doctors" });
 
 app.MapControllerRoute(
     name: "default",

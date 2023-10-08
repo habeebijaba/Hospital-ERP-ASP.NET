@@ -45,14 +45,10 @@ public class AccountController : Controller
     public IActionResult Signup(User obj)
     {
         var userJson = JsonConvert.SerializeObject(obj);
-        _logger.LogInformation("User: {userJson}...................", userJson);
+        _logger.LogInformation("User: {userJson}", userJson);
 
         if (ModelState.IsValid)
         {
-
-
-            // Hash the password before saving it to the database
-            // obj.Password = HashPassword(obj.Password);
             obj.Password = BCrypt.Net.BCrypt.HashPassword(obj.Password);
 
             dbContext.Users.Add(obj);
@@ -114,12 +110,11 @@ public class AccountController : Controller
         if (user != null && VerifyPassword(model.Password, user.Password))
         {
             // bool isAdmin =true;
-            // Create claims for the authenticated user (you can customize this as needed)
+
             var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, user.Email),
              new Claim("IsUser", "true")
-            // Add other claims as needed, e.g., roles, user ID, etc.
         };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -129,26 +124,24 @@ public class AccountController : Controller
             // Sign in the user by creating and setting the authentication cookie
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-            // Successful login - redirect to the "Index" action of the "Home" controller
             //  return isAdmin ? RedirectToAction("MyAction", "Custom") : RedirectToAction("Index", "Home");
             return RedirectToAction("Index", "Home");
         }
         else
         {
-            // Failed login - display an error message
+            // Failed login, display error message
             ModelState.AddModelError("", "Invalid email or password.");
             return View();
         }
     }
 
-    // Simulate user authentication (replace with your actual authentication logic)
 
     private bool VerifyPassword(string enteredPassword, string hashedPassword)
     {
         return BCrypt.Net.BCrypt.Verify(enteredPassword, hashedPassword);
     }
 
-    // Action to display the dashboard (replace with your actual dashboard logic)
+    // Action to display the dashboard 
     public IActionResult Dashboard()
     {
         return View();
@@ -159,7 +152,7 @@ public class AccountController : Controller
         // Sign out the user and delete the authentication cookie
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-        // Redirect to the login page or any other desired page after logout
+        // Redirect to the login page after logout
         return RedirectToAction("Login");
     }
 

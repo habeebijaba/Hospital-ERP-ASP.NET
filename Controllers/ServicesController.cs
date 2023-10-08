@@ -4,16 +4,16 @@ using FunInVscode.Models;
 
 namespace FunInVscode.Controllers;
 
-public class MeController : Controller
+public class ServicesController : Controller
 {
-    private readonly ILogger<MeController> _logger;
+    private readonly ILogger<ServicesController> _logger;
 
-    public MeController(ILogger<MeController> logger)
+    public ServicesController(ILogger<ServicesController> logger)
     {
         _logger = logger;
     }
 
-    public IActionResult MyAction(int? id)
+     public IActionResult Services(int? id)
     {
         return View();
     }
