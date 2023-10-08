@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div style="display: flex;align-items: center;gap: 100px;">
+    <div style="flex: 1; display: flex;flex-direction: column;gap: 50px;">
+        <h1
+            style="font-size: 55px;background-image: linear-gradient(to bottom, #2f86d4, #bbb);-webkit-background-clip: text;-webkit-text-fill-color: transparent;">
+            Get a professional diaganosis in your neighborhood
+        </h1>
+        <p style="font-size: 22px;font-weight: 300;">
+            Leading experts in all major fields are just around the corner Book your appoinment today
+        </p>
+        <div style="display: flex; gap: 30px;">
+            <button
+                style="  padding: 10px;cursor: pointer;background-color: #2f86d4;color: white;border: none;border-radius: 50px;max-width: max-content;font-size: 20px;">
+                Book an appoinment
+            </button>
+            <button
+                style="  padding: 10px;cursor: pointer;background-color: #2f86d4;color: white;border: none;border-radius: 50px;max-width: max-content;font-size: 20px;">
+                Learn more
+            </button>
+        </div>
+    </div>
+    <div class="img-container" style="  flex: 1; display: flex;flex-direction: column;gap: 50px;">
+        <Image style="width: 100%;height: 500px;object-fit: contain;animation: move 3s infinite ease alternate; z-index: 1;"
+            src=/assets/doctor.png alt="main" />
+    </div>
+</div>
