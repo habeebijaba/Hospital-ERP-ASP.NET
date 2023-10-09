@@ -7,7 +7,6 @@ namespace FunInVscode.Controllers;
 public class DoctorsController : Controller
 {
     private readonly ILogger<DoctorsController> _logger;
-
     public DoctorsController(ILogger<DoctorsController> logger)
     {
         _logger = logger;

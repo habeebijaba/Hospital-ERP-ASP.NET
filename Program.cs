@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,7 @@ builder.Services.AddControllersWithViews();
 
 //dbconnection establishhhhh
 
-builder.Services.AddDbContext<ApplicationDbContext>(options=>
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddLogging(loggingBuilder =>
@@ -27,11 +28,17 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 //for specifying authorization
-   builder.Services.AddAuthorization(options =>
+//    builder.Services.AddAuthorization(options =>
+// {
+//     options.AddPolicy("Admin", policy => policy.RequireClaim("IsAdmin", "true"));
+//     options.AddPolicy("User", policy => policy.RequireClaim("IsUser", "true"));
+// });
+builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("Admin", policy => policy.RequireClaim("IsAdmin", "true"));
-    options.AddPolicy("User", policy => policy.RequireClaim("IsUser", "true"));
+    options.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
+    options.AddPolicy("User", policy => policy.RequireClaim(ClaimTypes.Role, "User")); // Use ClaimTypes.Role
 });
+
 
 
 
@@ -79,13 +86,23 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "services",
     // pattern: "services/{action}/{id?}",
-    pattern:"/Services",
+    pattern: "/Services",
     defaults: new { controller = "Services", action = "Services" });
 
 app.MapControllerRoute(
     name: "doctors",
     pattern: "/Doctors",
     defaults: new { controller = "Doctors", action = "Doctors" });
+
+app.MapControllerRoute(
+    name: "users",
+    pattern: "Dashboard/users",
+    defaults: new { controller = "Admin", action = "Users" });
+
+app.MapControllerRoute(
+    name: "ManageDoctors",
+    pattern: "Dashboard/managedoctors",
+    defaults: new { controller = "Admin", action = "Doctors" });
 
 app.MapControllerRoute(
     name: "default",

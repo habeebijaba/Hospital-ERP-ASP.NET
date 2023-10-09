@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FunInVscode.Controllers;
 
-
 // [Authorize]
 [Authorize(Policy = "User")]
 public class HomeController : Controller

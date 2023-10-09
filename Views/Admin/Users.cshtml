@@ -1,0 +1,25 @@
+@model List<User>
+
+<h1>Users</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            @* <th>Name</th> *@
+            <th>Email</th>
+            <!-- Add more table headers as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                @* <td>@user.Name</td> *@
+                <td>@user.Email</td>
+                <!-- Add more table columns for other user properties -->
+            </tr>
+        }
+    </tbody>
+</table>

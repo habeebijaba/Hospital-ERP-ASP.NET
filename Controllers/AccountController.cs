@@ -50,7 +50,6 @@ public class AccountController : Controller
         if (ModelState.IsValid)
         {
             obj.Password = BCrypt.Net.BCrypt.HashPassword(obj.Password);
-
             dbContext.Users.Add(obj);
             dbContext.SaveChanges();
             return RedirectToAction("Login");
@@ -66,7 +65,6 @@ public class AccountController : Controller
 
     // Action to process the login request
 
-    [HttpPost]
     // public IActionResult Login(User model)
     // {
     //     _logger.LogInformation("User {email} {password}logged in successfully.", model.Email, model.Password);
@@ -101,37 +99,53 @@ public class AccountController : Controller
     //     }
     // }
 
+    [HttpPost]
+
     public async Task<IActionResult> Login(User model)
     {
         _logger.LogInformation("User {email} {password} logged in successfully.", model.Email, model.Password);
 
-        var user = dbContext.Users.FirstOrDefault(u => u.Email == model.Email);
-
-        if (user != null && VerifyPassword(model.Password, user.Password))
+        if (IsAnAdmin(model.Email, model.Password))
         {
-            // bool isAdmin =true;
-
             var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, user.Email),
-             new Claim("IsUser", "true")
+            new Claim(ClaimTypes.Name, model.Email),
+            new Claim(ClaimTypes.Role, "Admin")
         };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
             var principal = new ClaimsPrincipal(identity);
 
-            // Sign in the user by creating and setting the authentication cookie
+            // Sign in the admin user by creating and setting the authentication cookie
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
-            //  return isAdmin ? RedirectToAction("MyAction", "Custom") : RedirectToAction("Index", "Home");
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Dashboard");
         }
         else
         {
-            // Failed login, display error message
-            ModelState.AddModelError("", "Invalid email or password.");
-            return View();
+            var user = dbContext.Users.FirstOrDefault(u => u.Email == model.Email);
+
+            if (user != null && VerifyPassword(model.Password, user.Password))
+            {
+                var claims = new List<Claim>
+                 {
+                  new Claim(ClaimTypes.Name, user.Email),
+                 new Claim(ClaimTypes.Role, "User")
+                  };
+
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var principal = new ClaimsPrincipal(identity);
+
+                // Sign in the user by creating and setting the authentication cookie
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                // Failed login, display error message
+                ModelState.AddModelError("", "Invalid email or password.");
+                return View();
+            }
         }
     }
 
@@ -147,12 +161,19 @@ public class AccountController : Controller
         return View();
     }
 
+    private bool IsAnAdmin(string email, string password)
+    {
+        if (email == "admin@gmail.com" && password == "Admin@123")
+        {
+            return true;
+        }
+        return false;
+    }
+
     public async Task<IActionResult> Logout()
     {
         // Sign out the user and delete the authentication cookie
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-        // Redirect to the login page after logout
         return RedirectToAction("Login");
     }
 
