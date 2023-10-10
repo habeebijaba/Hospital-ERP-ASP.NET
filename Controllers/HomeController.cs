@@ -4,7 +4,7 @@ using FunInVscode.Models;
 using Microsoft.AspNetCore.Authorization;
 
 namespace FunInVscode.Controllers;
-
+ 
 // [Authorize]
 [Authorize(Policy = "User")]
 public class HomeController : Controller
@@ -16,7 +16,7 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    public IActionResult Index()
+     public IActionResult Index()
     {
         return View();
     }

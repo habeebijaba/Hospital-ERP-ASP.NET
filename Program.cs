@@ -39,9 +39,6 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("User", policy => policy.RequireClaim(ClaimTypes.Role, "User")); // Use ClaimTypes.Role
 });
 
-
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -54,9 +51,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
 

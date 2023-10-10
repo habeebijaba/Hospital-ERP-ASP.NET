@@ -100,7 +100,6 @@ public class AccountController : Controller
     // }
 
     [HttpPost]
-
     public async Task<IActionResult> Login(User model)
     {
         _logger.LogInformation("User {email} {password} logged in successfully.", model.Email, model.Password);
