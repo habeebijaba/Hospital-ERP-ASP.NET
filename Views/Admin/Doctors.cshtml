@@ -1,11 +1,12 @@
-@* @model List<YourApplication.Models.Doctor> *@
 @model Doctor
 
-<h1>Doctors</h1>
-
-<button class="btn btn-primary" data-toggle="modal" data-target="#addDoctorModal">Add Doctor</button>
-
-<table class="table table-striped">
+@{
+    var serialNumber = 1; // Initialize the serial number
+}
+<div class="text-right">
+    <button class="btn btn-success" data-toggle="modal" data-target="#addDoctorModal">Add Doctor</button>
+</div>
+<table class="table table-striped mt-3">
     <thead>
         <tr>
             <th>No</th>
@@ -13,30 +14,30 @@
             <th>Department</th>
             <th>Fees</th>
             <th>Availability</th>
-            <th>ImagePath</th>
+            <th>Image</th>
             <th>Edit</th>
             <th>Delete</th>
-
-
-            <!-- Add more table headers as needed -->
         </tr>
     </thead>
     <tbody>
-        @* @foreach (var doctor in Model)
-        { *@
-        <tr>
-            <td>doctor.Id</td>
-            <td>doctor.Name</td>
-            <td>doctor.Department</td>
-            <td>doctor.Charge</td>
-            <td>doctor.Availability</td>
-            <td>doctor.ImagePath</td>
-            <td><button>edit</button></td>
-            <td><button>delete</button></td>
+        @foreach (var doctor in ViewBag.doctors)
+        {
+            <tr>
+                <td>@serialNumber</td>
+                <td>@doctor.Name</td>
+                <td>@doctor.Department</td>
+                <td>@doctor.Charge</td>
+                <td>@doctor.Availability</td>
+                <td><img src="~/uploads/@doctor.ImagePath" style="width: 50px; height: 50px; border-radius: 50%;" alt="">
+                </td>
+                <td><button class="btn btn-primary">edit</button></td>
+                <td>
+                    <button class="btn btn-danger" onclick="showDeleteConfirmation(@doctor.Id)">Delete</button>
+                </td>
 
-            <!-- Add more table columns for other doctor properties -->
-        </tr>
-        @* } *@
+            </tr>
+            serialNumber++;
+        }
     </tbody>
 </table>
 
@@ -52,7 +53,6 @@
                 </button>
             </div>
             <div class="modal-body">
-                <!-- Add your form fields for adding a doctor here -->
                 <form asp-action="ManageDoctors" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label asp-for="Name"></label>
@@ -73,7 +73,6 @@
                     <div class="form-group">
                         <label for="ImagePath">Image</label>
                         <input type="file" id="ImagePath" name="file" class="form-control" />
-                        <!-- Remove asp-for and change name attribute to "imageFile" -->
                     </div>
                     <button type="submit" class="btn btn-primary">Create</button>
                 </form>
@@ -86,3 +85,48 @@
         </div>
     </div>
 </div>
+
+<script>
+    function showDeleteConfirmation(doctorId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This action cannot be undone!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteDoctor(doctorId);
+                }
+            });
+    }
+
+    function deleteDoctor(doctorId) {
+        fetch(`/Admin/DeleteDoctor?id=${doctorId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Item has been deleted',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        location.reload();
+
+                    })
+                } else {
+                    console.error('Error deleting doctor');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting doctor', error);
+            });
+    }
+</script>

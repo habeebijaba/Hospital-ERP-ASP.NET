@@ -1,1 +1,51 @@
-<h1>Doctors list page</h1>
+@model Doctor
+
+@{
+    var doctors = ViewBag.doctors as List<Doctor>;
+}
+
+<div class="d-flex flex-wrap">
+    @for (var i = 0; i < doctors.Count; i++)
+    {
+        var doctor = doctors[i];
+
+        if (i % 4 == 0)
+        {
+            @:</div> 
+            @:<div class="row m-4"> 
+        }
+
+        <div class="col-md-3">
+            <div class="card border-0 rounded-0 shadow" style="width: 18rem;">
+                <img src="~/uploads/@doctor.ImagePath" class="card-img-top rounded-0"
+                    alt="...">
+                <div class="card-body mt-3 mb-3">
+                    <div class="row">
+                        <div class="col-10">
+                            <h4 class="card-title">Dr : @doctor.Name MBBS</h4>
+                            <p class="card-text">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                (123)
+                            </p>
+                        </div>
+                        <div class="col-2">
+                            <i class="bi bi-bookmark-plus fs-2"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center text-center g-0">
+                    <div class="col-4">
+                        <h5>Fees:₹@doctor.Charge</h5>
+                    </div>
+                    <div class="col-8">
+                        <a href="#" class="btn btn-dark w-100 p-3 rounded-0 text-warning">Book an appoinment</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

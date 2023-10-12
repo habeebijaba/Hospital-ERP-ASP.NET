@@ -6,14 +6,23 @@ namespace FunInVscode.Controllers;
 
 public class DoctorsController : Controller
 {
-    private readonly ILogger<DoctorsController> _logger;
-    public DoctorsController(ILogger<DoctorsController> logger)
+    // private readonly ILogger<DoctorsController> _logger;
+    // public DoctorsController(ILogger<DoctorsController> logger)
+    // {
+    //     _logger = logger;
+    // }
+
+     private readonly ApplicationDbContext dbContext;
+
+    public DoctorsController(ApplicationDbContext context)
     {
-        _logger = logger;
+        dbContext = context;
     }
 
     public IActionResult Doctors(int? id)
     {
+        var doctors = dbContext.Doctors.ToList(); // Retrieve all doctors
+        ViewBag.doctors=doctors;
         return View();
     }
 

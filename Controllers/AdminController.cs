@@ -28,6 +28,7 @@ public class AdminController : Controller
     public IActionResult ManageDoctors()
     {
         var doctors = dbContext.Doctors.ToList(); // Retrieve all doctors
+        ViewBag.doctors=doctors;
 
         return View("Doctors");
     }
@@ -60,4 +61,50 @@ public class AdminController : Controller
         return RedirectToAction("ManageDoctors");
 
     }
+
+    public async Task<IActionResult> DeleteDoctor(int id)
+{
+    var doctor = await dbContext.Doctors.FindAsync(id);
+
+    if (doctor == null)
+    {
+        return NotFound();
+    }
+    dbContext.Doctors.Remove(doctor);
+     // Remove the corresponding image from the folder
+    if (!string.IsNullOrEmpty(doctor.ImagePath))
+    {
+        var imagePath = Path.Combine(_environment.WebRootPath, "uploads", doctor.ImagePath);
+        if (System.IO.File.Exists(imagePath))
+        {
+            System.IO.File.Delete(imagePath);
+        }
+    }
+    await dbContext.SaveChangesAsync();
+    return RedirectToAction("ManageDoctors");
+}
+
+
+ public async Task<IActionResult> DeleteUser(int id)
+{
+    var user = await dbContext.Users.FindAsync(id);
+
+    if (user == null)
+    {
+        return NotFound();
+    }
+    dbContext.Users.Remove(user);
+     // Remove the corresponding image from the folder
+    if (!string.IsNullOrEmpty(user.Image))
+    {
+        var imagePath = Path.Combine(_environment.WebRootPath, "users", user.Image);
+        if (System.IO.File.Exists(imagePath))
+        {
+            System.IO.File.Delete(imagePath);
+        }
+    }
+    await dbContext.SaveChangesAsync();
+    return RedirectToAction("Users");
+}
+
 }

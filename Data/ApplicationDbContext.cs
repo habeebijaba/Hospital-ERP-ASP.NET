@@ -15,9 +15,39 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>().HasData(
-            new User { Id = 1, Email = "habeebav841@gmail.com", Password = "123" },
-            new User { Id = 2, Email = "safeer@gmail.com", Password = "123" },
-            new User { Id = 3, Email = "saleel@gmail.com", Password = "123" }
+          new User
+    {
+        Id = 1,
+        Name="Habeeb Ijaba",
+        Email = "habeebav841@gmail.com",
+        Password = "123",
+        Image = "user1.jpg",
+        DateOfBirth = new DateTime(1990, 1, 1), 
+        Age = 33, 
+        Place = "SomePlace" 
+    },
+    new User
+    {
+        Id = 2,
+        Name="Safeer sfr",
+        Email = "safeer@gmail.com",
+        Password = "123",
+        Image = "user2.jpg", 
+        DateOfBirth = new DateTime(1991, 2, 2), 
+        Age = 32,
+        Place = "AnotherPlace" 
+    },
+    new User
+    {
+        Id = 3,
+        Name="Saleel Hisan",
+        Email = "saleel@gmail.com",
+        Password = "123",
+        Image = "user3.jpg", 
+        DateOfBirth = new DateTime(1992, 3, 3), 
+        Age = 31, 
+        Place = "YetAnotherPlace" 
+    }
 
         );
 

@@ -12,11 +12,15 @@ public class AccountController : Controller
 {
     private readonly ApplicationDbContext dbContext;
     private readonly ILogger<AccountController> _logger;
+    private readonly IWebHostEnvironment _environment; // Inject IWebHostEnvironment for file handling
 
-    public AccountController(ApplicationDbContext context, ILogger<AccountController> logger)
+
+    public AccountController(ApplicationDbContext context, ILogger<AccountController> logger,IWebHostEnvironment environment)
     {
         dbContext = context;
         _logger = logger;
+        _environment = environment; // Injected IWebHostEnvironment
+
     }
 
     //  private readonly ApplicationDbContext dbContext;
@@ -42,15 +46,31 @@ public class AccountController : Controller
     // Action to process the signup request
 
     [HttpPost]
-    public IActionResult Signup(User obj)
+    public async Task<IActionResult>  Signup(User user, IFormFile? file,[FromServices] IUserService userService)
     {
-        var userJson = JsonConvert.SerializeObject(obj);
+        var userJson = JsonConvert.SerializeObject(user);
         _logger.LogInformation("User: {userJson}", userJson);
 
         if (ModelState.IsValid)
         {
-            obj.Password = BCrypt.Net.BCrypt.HashPassword(obj.Password);
-            dbContext.Users.Add(obj);
+
+
+            if (file != null && file.Length > 0)
+            {
+                var uploads = Path.Combine(_environment.WebRootPath, "users");
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                var filePath = Path.Combine(uploads, fileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+                user.Image = fileName;
+            }
+
+
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            dbContext.Users.Add(user);
             dbContext.SaveChanges();
             return RedirectToAction("Login");
         }
@@ -127,7 +147,7 @@ public class AccountController : Controller
             {
                 var claims = new List<Claim>
                  {
-                  new Claim(ClaimTypes.Name, user.Email),
+                  new Claim(ClaimTypes.Name, user.Name),
                  new Claim(ClaimTypes.Role, "User")
                   };
 

@@ -1,25 +1,88 @@
 @model List<User>
 
-<h1>Users</h1>
+@{
+    var serialNumber = 1; // Initialize the serial number
+}
 
-<table class="table table-striped">
+<div class="text-right">
+<button class="btn btn-success" data-toggle="modal" data-target="#addDoctorModal">Add User</button>
+</div>
+
+<table class="table table-striped mt-3">
     <thead>
         <tr>
             <th>ID</th>
-            @* <th>Name</th> *@
-            <th>Email</th>
-            <!-- Add more table headers as needed -->
+            <th>Name</th>
+            <th>Age</th>
+            <th>DOB</th>
+            <th>Place</th>
+            <th>Image</th>
+            <th>Edit</th>
+            <th>Delete</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var user in Model)
         {
             <tr>
-                <td>@user.Id</td>
-                @* <td>@user.Name</td> *@
-                <td>@user.Email</td>
-                <!-- Add more table columns for other user properties -->
+                <td>@serialNumber</td>
+                <td>@user.Name</td>
+                <td>@user.Age</td>
+                <td>@user.DateOfBirth</td>
+                <td>@user.Place</td>
+                <td><img src="~/users/@user.Image" style="width: 50px; height: 50px; border-radius: 50%;" alt="">
+                </td>
+                <td><button class="btn btn-primary">edit</button></td>
+                <td>
+                    <button class="btn btn-danger" onclick="showDeleteConfirmation(@user.Id)">Delete</button>
+                </td>
             </tr>
+            serialNumber++;
         }
     </tbody>
 </table>
+
+<script>
+    function showDeleteConfirmation(userId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This action cannot be undone!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteUser(userId);
+                }
+            });
+    }
+
+    function deleteUser(userId) {
+        fetch(`/Admin/DeleteUser?id=${userId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'User has been deleted',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        location.reload(); 
+
+                    })
+                } else {
+                    console.error('Error deleting user');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting user', error);
+            });
+    }
+</script>

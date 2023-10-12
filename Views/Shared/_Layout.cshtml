@@ -15,35 +15,31 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+<link href="https://demo.dashboardpack.com/architectui-html-free/main.css" rel="stylesheet"></head>
+<script type="text/javascript" src="https://demo.dashboardpack.com/architectui-html-free/assets/scripts/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 
-</head>
+
+
+@* </head> *@
 <body>
     @if (User.Identity.IsAuthenticated)
     {
         if (User.IsInRole("User"))
     {
         <header style="background-color:#07315d ;">
-            @* <div class="header-top">
-        <div class="header-right text light">
-        <ul class="d-flex pt-2" style="list-style-type: none;">
-        <li class="ms-auto mx-3"><a href="">About Us</a></li>
-        <li class="mx-3"><a href="/contact-us">Contact Us</a></li>
-        <li><a href="/logout" data-toggle="modal"><i class="fa fa-user"></i>Logout</a> </li>
+        <div class="header-top" style="background-color: #07315d; border-bottom: 0.5px solid #777;">
+    <div class="header-right text-light" style="margin-right: 50px;">
+        <ul class="d-flex pt-2 list-unstyled justify-content-end">
+            <li class="mx-3"><a href="" style="text-decoration: none; font-weight: 400; font-size: .9rem; line-height: 1.5; letter-spacing: 0; color: #777;"><i class="fa fa-user"></i>  @User.FindFirst(ClaimTypes.Name)?.Value</a></li>
+            <li><a  asp-area="" asp-controller="Account" asp-action="Logout" style="text-decoration: none; font-weight: 400; font-size: .9rem; line-height: 1.5; letter-spacing: 0; color: #777;">Logout</a></li>
         </ul>
-        </div>
-        </div> *@
+    </div>
+</div>
 
-            <div  style="background-color: #07315d;" class="header-top " style="border-bottom: 0.5px solid #777;">
-        <div class="header-right text light" style="margin-right:50px" ;>
-        <ul class="d-flex pt-2" style="list-style-type: none;">
-        <li class="ms-auto mx-3"><a href="" style="text-decoration: none; font-weight: 400; font-size: .9rem; line-height: 1.5; letter-spacing: 0; color: #777;">AboutUs</a></li>
-        <li class="mx-3"><a href=""style="text-decoration: none; font-weight: 400; font-size: .9rem; line-height: 1.5; letter-spacing: 0; color:#777;">Contact Us</a></li>
-        <li><a href="/logout" data-toggle="modal"style="text-decoration: none; font-weight: 400; font-size: .9rem; line-height: 1.5; letter-spacing: 0; color:#777;"><i class="fa fa-user"></i>Logout</a></li>
-        </ul>
-        </div>
-        </div>
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light " style="background-color: #07315d;">
                 @* style="background-color: #white;"> *@
                 <div class="container-fluid">
@@ -63,7 +59,19 @@
                             </li>
                             <li class="nav-item mx-3">
                                 <a class="nav-link text-white " asp-area="" asp-controller="Doctors" asp-action="Doctors"
-                                    style="font-weight: 500;font-size: 0.9rem;font-family: 'arial';letter-spacing: .01em;color: #fff;">DOCTORS</a>
+                                    style="font-weight: 500;font-size: 0.9rem;font-family: 'arial';letter-spacing: .01em;color: #fff;">PATIENT CARE</a>
+                            </li>
+                            @* <li class="nav-item mx-3">
+                                <a class="nav-link text-white " asp-area="" asp-controller="Doctors" asp-action="Doctors"
+                                    style="font-weight: 500;font-size: 0.9rem;font-family: 'arial';letter-spacing: .01em;color: #fff;">PATIENT CARE</a>
+                            </li> *@
+                            <li class="nav-item mx-3">
+                                <a class="nav-link text-white " asp-area="" asp-controller="Doctors" asp-action="Doctors"
+                                    style="font-weight: 500;font-size: 0.9rem;font-family: 'arial';letter-spacing: .01em;color: #fff;">MEDICAL SPECIALITIES</a>
+                            </li>
+                            <li class="nav-item mx-3">
+                                <a class="nav-link text-white " asp-area="" asp-controller="Doctors" asp-action="Doctors"
+                                    style="font-weight: 500;font-size: 0.9rem;font-family: 'arial';letter-spacing: .01em;color: #fff;">CAREER</a>
                             </li>
                             <li class="nav-item mx-3">
                                 <a class="nav-link text-white " asp-area="" asp-controller="Services" asp-action="Services"
@@ -75,18 +83,18 @@
                             </li>
                             <li class="nav-item mx-3">
                                 <a class="nav-link text-white " asp-area="" asp-controller="Contact" asp-action="Contact"
-                                    style="font-weight: 500;font-size: 0.9rem; font-family: 'arial';letter-spacing: .01em;  color: #fff;">CONTACT @User.FindFirst(ClaimTypes.Name)?.Value</a>
+                                    style="font-weight: 500;font-size: 0.9rem; font-family: 'arial';letter-spacing: .01em;  color: #fff;">CONTACT</a>
                             </li>
-                            <li class="nav-item mx-3">
+                            @* <li class="nav-item mx-3">
                                 <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout"
                                     style="font-weight: 500;font-size: 0.9rem; font-family: 'arial'; letter-spacing: .01em;color: #fff; ">LOGOUT</a>
-                            </li>
+                            </li> *@
                         </ul>
                     </div>
                 </div>
             </nav>
         </header>
-         <div class="container">
+         <div class="">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -98,60 +106,61 @@
     {   
         if (User.IsInRole("Admin"))
     {
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Admin Dashboard</a>
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #007bff;">
+    <a class="navbar-brand" style="color: white; href="#">Admin Dashboard</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="collapse navbar-collapse p-1" id="navbarNav">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link"  style="color: white;font-size: 20px;font-weight: 500;" href="#">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Settings</a>
+                <a class="nav-link"  style="color: white;font-size: 20px;font-weight: 500;" href="#">Settings</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link"  asp-controller="Account" asp-action="Logout" >Logout</a>
+                <a class="nav-link"  style="color: white;font-size: 20px;font-weight: 500;" asp-controller="Account" asp-action="Logout" >Logout</a>
             </li>
         </ul>
     </div>
 </nav>
-<div class="container-fluid">
+<div class="container-fluid " >
     <div class="row">
         <!-- Sidebar -->
-        <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+        <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar" style="background-color: #007bff;min-height: 100vh;">
             <div class="position-sticky">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active"  asp-controller="Account" asp-action="Dashboard" >
+                        <a class="nav-link"  style="color: white;font-size: 20px;font-weight: 500;" asp-controller="Account" asp-action="Dashboard" >
                             Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Admin" asp-action="Users">
+                        <a class="nav-link" style="color: white;font-size: 20px;font-weight: 500;" asp-controller="Admin" asp-action="Users">
                             Users
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link"  asp-controller="Admin" asp-action="ManageDoctors">
+                        <a class="nav-link" style="color: white;font-size: 20px;font-weight: 500;"  asp-controller="Admin" asp-action="ManageDoctors">
                             Doctors
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" style="color: white;font-size: 20px;font-weight: 500;" href="#">
                             Orders
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" style="color: white;font-size: 20px;font-weight: 500;" href="#">
                             Reports
                         </a>
                     </li>
                 </ul>
             </div>
         </nav>
+        
         <!-- Main Content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
