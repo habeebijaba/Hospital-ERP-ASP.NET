@@ -3,9 +3,9 @@ using Newtonsoft.Json;
 using BCrypt.Net;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Collections.Generic;  // For List<T>
-using System.Security.Claims;      // For Claim and ClaimTypes
-using System.Threading.Tasks;     // For Task
+using System.Collections.Generic;  
+using System.Security.Claims;      
+using System.Threading.Tasks;     
 
 
 public class AccountController : Controller
@@ -15,7 +15,7 @@ public class AccountController : Controller
     private readonly IWebHostEnvironment _environment; // Inject IWebHostEnvironment for file handling
 
 
-    public AccountController(ApplicationDbContext context, ILogger<AccountController> logger,IWebHostEnvironment environment)
+    public AccountController(ApplicationDbContext context, ILogger<AccountController> logger, IWebHostEnvironment environment)
     {
         dbContext = context;
         _logger = logger;
@@ -46,7 +46,7 @@ public class AccountController : Controller
     // Action to process the signup request
 
     [HttpPost]
-    public async Task<IActionResult>  Signup(User user, IFormFile? file,[FromServices] IUserService userService)
+    public async Task<IActionResult> Signup(User user, IFormFile? file, [FromServices] IUserService userService)
     {
         var userJson = JsonConvert.SerializeObject(user);
         _logger.LogInformation("User: {userJson}", userJson);
@@ -161,7 +161,6 @@ public class AccountController : Controller
             }
             else
             {
-                // Failed login, display error message
                 ModelState.AddModelError("", "Invalid email or password.");
                 return View();
             }

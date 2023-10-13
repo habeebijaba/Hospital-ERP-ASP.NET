@@ -1,17 +1,17 @@
 @model List<User>
 
 @{
-    var serialNumber = 1; // Initialize the serial number
+    var serialNumber = 1; // Initialize number
 }
 
 <div class="text-right">
-<button class="btn btn-success" data-toggle="modal" data-target="#addDoctorModal">Add User</button>
+    <button class="btn btn-success" data-toggle="modal" data-target="#addDoctorModal">Add User</button>
 </div>
 
 <table class="table table-striped mt-3">
     <thead>
         <tr>
-            <th>ID</th>
+            <th>No</th>
             <th>Name</th>
             <th>Age</th>
             <th>DOB</th>
@@ -32,7 +32,9 @@
                 <td>@user.Place</td>
                 <td><img src="~/users/@user.Image" style="width: 50px; height: 50px; border-radius: 50%;" alt="">
                 </td>
-                <td><button class="btn btn-primary">edit</button></td>
+                @* <td><button class="btn btn-primary">edit</button></td> *@
+                <td><button class="btn btn-primary" onclick="showEditUserModal(@user.Id)">Edit</button></td>
+
                 <td>
                     <button class="btn btn-danger" onclick="showDeleteConfirmation(@user.Id)">Delete</button>
                 </td>
@@ -42,20 +44,63 @@
     </tbody>
 </table>
 
+<!-- Edit User Modal -->
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editUserForm" asp-action="EditUser" method="post" enctype="multipart/form-data">
+                    <input type="hidden" id="editUserId" name="Id" />
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input name="Name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Age</label>
+                        <input name="Age" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <input type="hidden" name="DateOfBirth" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Place</label>
+                        <input name="Place" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="editUserImage">Image</label>
+                        <input type="file" id="editUserImage" name="file" class="form-control" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
     function showDeleteConfirmation(userId) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'This action cannot be undone!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Delete',
-                cancelButtonText: 'Cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    deleteUser(userId);
-                }
-            });
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'This action cannot be undone!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Delete',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteUser(userId);
+            }
+        });
     }
 
     function deleteUser(userId) {
@@ -74,7 +119,7 @@
                         showConfirmButton: false,
                         timer: 1500
                     }).then(() => {
-                        location.reload(); 
+                        location.reload();
 
                     })
                 } else {
@@ -84,5 +129,37 @@
             .catch(error => {
                 console.error('Error deleting user', error);
             });
+    }
+</script>
+
+<script>
+    var usersData = @Html.Raw(ViewBag.UsersJson);
+</script>
+
+
+
+<script>
+    function showEditUserModal(userId) {
+        var user = findUserById(userId);
+
+        if (user) {
+        
+            $('#editUserId').val(userId);
+            $('#editUserForm input[name="Name"]').val(user.Name);
+            $('#editUserForm input[name="Age"]').val(user.Age);
+            $('#editUserForm input[name="DateOfBirth"]').val(user.DateOfBirth);
+            $('#editUserForm input[name="Place"]').val(user.Place);
+    
+                $('#editUserModal').modal('show'); // Show edit modal
+        }
+    }
+
+    function findUserById(userId) {
+        for (var i = 0; i < usersData.length; i++) {
+            if (usersData[i].Id == userId) {
+                return usersData[i];
+            }
+        }
+        return null;
     }
 </script>

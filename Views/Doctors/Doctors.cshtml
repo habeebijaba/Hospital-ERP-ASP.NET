@@ -11,14 +11,13 @@
 
         if (i % 4 == 0)
         {
-            @:</div> 
-            @:<div class="row m-4"> 
+            @:</div>
+            @:<div class="row m-4">
         }
 
         <div class="col-md-3">
             <div class="card border-0 rounded-0 shadow" style="width: 18rem;">
-                <img src="~/uploads/@doctor.ImagePath" class="card-img-top rounded-0"
-                    alt="...">
+                <img src="~/uploads/@doctor.ImagePath" class="card-img-top rounded-0" alt="...">
                 <div class="card-body mt-3 mb-3">
                     <div class="row">
                         <div class="col-10">
@@ -28,7 +27,10 @@
                                 <i class="bi bi-star-fill text-warning"></i>
                                 <i class="bi bi-star-fill text-warning"></i>
                                 <i class="bi bi-star-fill text-warning"></i>
-                                (123)
+                                @doctor.Department
+                            </p>
+                            <p class="card-text">
+                                Availability : @doctor.Availability
                             </p>
                         </div>
                         <div class="col-2">

@@ -1,7 +1,7 @@
 @model Doctor
 
 @{
-    var serialNumber = 1; // Initialize the serial number
+    var serialNumber = 1; // Initialize number
 }
 <div class="text-right">
     <button class="btn btn-success" data-toggle="modal" data-target="#addDoctorModal">Add Doctor</button>
@@ -30,7 +30,9 @@
                 <td>@doctor.Availability</td>
                 <td><img src="~/uploads/@doctor.ImagePath" style="width: 50px; height: 50px; border-radius: 50%;" alt="">
                 </td>
-                <td><button class="btn btn-primary">edit</button></td>
+                @* <td><button class="btn btn-primary">edit</button></td> *@
+                <td><button class="btn btn-primary" onclick="showEditModal(@doctor.Id)">Edit</button></td>
+
                 <td>
                     <button class="btn btn-danger" onclick="showDeleteConfirmation(@doctor.Id)">Delete</button>
                 </td>
@@ -86,6 +88,49 @@
     </div>
 </div>
 
+
+
+<!-- Edit Doctor Modal -->
+<div class="modal fade" id="editDoctorModal" tabindex="-1" role="dialog" aria-labelledby="editDoctorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editDoctorModalLabel">Edit Doctor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editDoctorForm" asp-action="EditDoctor" method="post" enctype="multipart/form-data">
+                    <input type="hidden" id="editDoctorId" name="Id" />
+                    <div class="form-group">
+                        <label asp-for="Name">Name</label>
+                        <input asp-for="Name" name="Name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Department">Department</label>
+                        <input asp-for="Department" name="Department" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Charge">Fees</label>
+                        <input asp-for="Charge" name="Charge" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Availability">Availability</label>
+                        <input asp-for="Availability" name="Availability" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="editImagePath">Image</label>
+                        <input type="file" id="editImagePath" name="file" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
     function showDeleteConfirmation(doctorId) {
             Swal.fire({
@@ -128,5 +173,35 @@
             .catch(error => {
                 console.error('Error deleting doctor', error);
             });
+    }
+</script>
+
+<script>
+    var doctorsData = @Html.Raw(ViewBag.DoctorsJson);
+</script>
+
+
+<script>
+    function showEditModal(doctorId) {
+        var doctor = findDoctorById(doctorId);
+
+        if (doctor) {
+            $('#editDoctorId').val(doctor.Id);
+            $('#editDoctorForm input[name="Name"]').val(doctor.Name);
+            $('#editDoctorForm input[name="Department"]').val(doctor.Department);
+            $('#editDoctorForm input[name="Charge"]').val(doctor.Charge);
+            $('#editDoctorForm input[name="Availability"]').val(doctor.Availability);
+
+            $('#editDoctorModal').modal('show'); // Show themodal
+        }
+    }
+
+     function findDoctorById(doctorId) {
+        for (var i = 0; i < doctorsData.length; i++) {
+            if (doctorsData[i].Id == doctorId) {
+                return doctorsData[i];
+            }
+        }
+        return null;
     }
 </script>

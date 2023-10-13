@@ -18,6 +18,7 @@ builder.Services.AddLogging(loggingBuilder =>
     loggingBuilder.AddConsole();
 });
 
+//registering the interface
 builder.Services.AddScoped<IUserService, UserService>();
 
 
@@ -102,15 +103,15 @@ app.MapControllerRoute(
     defaults: new { controller = "Admin", action = "Doctors" });
 
     
- app.MapControllerRoute(
-    name: "deleteDoctor",
-    pattern: "Admin/ManageDoctors/{id:int}",
-    defaults: new { controller = "Admin", action = "DeleteDoctor" });
+//  app.MapControllerRoute(
+//     name: "deleteDoctor",
+//     pattern: "Admin/ManageDoctors/{id:int}",
+//     defaults: new { controller = "Admin", action = "DeleteDoctor" });
 
-app.MapControllerRoute(
-    name: "deleteUser",
-    pattern: "Admin/ManageUsers/{id:int}",
-    defaults: new { controller = "Admin", action = "DeleteUser" });
+// app.MapControllerRoute(
+//     name: "deleteUser",
+//     pattern: "Admin/ManageUsers/{id:int}",
+//     defaults: new { controller = "Admin", action = "DeleteUser" });
 
 
 app.MapControllerRoute(
