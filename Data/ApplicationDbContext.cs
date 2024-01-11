@@ -25,6 +25,7 @@ public class ApplicationDbContext : DbContext
         DateOfBirth = new DateTime(1990, 1, 1), 
         Age = 33, 
         Place = "SomePlace" 
+        mobile=9605218486
     },
     new User
     {
@@ -36,6 +37,7 @@ public class ApplicationDbContext : DbContext
         DateOfBirth = new DateTime(1991, 2, 2), 
         Age = 32,
         Place = "AnotherPlace" 
+          mobile=9605218486
     },
     new User
     {
@@ -47,6 +49,7 @@ public class ApplicationDbContext : DbContext
         DateOfBirth = new DateTime(1992, 3, 3), 
         Age = 31, 
         Place = "YetAnotherPlace" 
+          mobile=9605218486
     }
 
         );
